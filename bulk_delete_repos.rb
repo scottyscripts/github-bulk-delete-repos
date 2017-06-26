@@ -1,5 +1,6 @@
 require 'json'
 require 'io/console'
+require 'colorize'
 
 puts 'What is your Github username?'
 USERNAME = STDIN.gets.chomp
@@ -8,11 +9,11 @@ puts 'What is your Github password?'
 PASSWORD = STDIN.noecho(&:gets).chomp
 
 def delete_repo!(owner, repo_name)
-  puts "\nAre you sure you want to delete? Enter [Y/y] to continue."
+  puts "\nEnter [Y/y] to confirm delete.".colorize(:red)
   confirmation = STDIN.gets.chomp
   if confirmation =~ /^[Yy]([Ee][Ss])?$/
     `curl --request DELETE -u "#{USERNAME}:#{PASSWORD}" "https://api.github.com/repos/#{owner}/#{repo_name}"`
-    puts "You have successfully deleted repo: #{repo_name}"
+    puts "You have successfully deleted repo: #{repo_name}".colorize(:green).underline
   else
     puts 'Moving to next repo...'
   end
@@ -21,7 +22,7 @@ end
 json_response = `curl -u "#{USERNAME}:#{PASSWORD}" 'https://api.github.com/users/#{USERNAME}/repos?sort=updated&direction=asc'`
 if json_response.include? 'Bad credentials'
   abort 'There was an issue w/ username or password. '\
-  'Please try again.'
+  'Please try again.'.colorize(:red)
 end
 repositories = JSON.parse(json_response)
 repositories.each do |repo|
@@ -31,7 +32,7 @@ repositories.each do |repo|
   is_private = repo['private']
   is_fork = repo['fork']
   is_admin = repo['permissions']['admin']
-  puts "\nWould you like to delete #{repo_name}?"
+  puts "\nWould you like to delete #{repo_name.colorize(:blue)}?"
   puts "  Owned by #{owner}"
   puts "  #{description}" unless description.nil?
   puts '  This is a private repo.' if is_private
