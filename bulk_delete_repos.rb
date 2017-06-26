@@ -18,7 +18,7 @@ def delete_repo!(owner, repo_name)
   end
 end
 
-json_response = `curl -u "#{USERNAME}:#{PASSWORD}" 'https://api.github.com/users/#{USERNAME}/repos'`
+json_response = `curl -u "#{USERNAME}:#{PASSWORD}" 'https://api.github.com/users/#{USERNAME}/repos?sort=updated&direction=asc'`
 if json_response.include? 'Bad credentials'
   abort 'There was an issue w/ username or password. '\
   'Please try again.'
