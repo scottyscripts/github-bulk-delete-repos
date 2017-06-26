@@ -1,8 +1,13 @@
 require 'json'
 require 'pry'
+require 'io/console'
 puts 'What is your Github username?'
-username = $stdin.gets.chomp
-json_response = `curl -u #{username} 'https://api.github.com/users/#{username}/repos'`
+username = STDIN.gets.chomp
+
+puts 'What is your Github password?'
+password = STDIN.noecho(&:gets).chomp
+puts password
+json_response = `curl -u "#{username}:#{password}" 'https://api.github.com/users/#{username}/repos'`
 if json_response.include? 'Bad credentials'
   abort 'There was an issue w/ username or password. '\
   'Please try again.'
@@ -18,7 +23,7 @@ repositories.each do |repo|
   puts "\tThis is a private repo" if is_private
   puts "\tThis is a forked repo" if is_fork
   puts "\nType [Y/y] to delete, or press any key to continue."
-  response = $stdin.gets.chomp
+  response = STDIN.gets.chomp
   if response =~ /^[Yy]([Ee][Ss])?$/
     puts 'DELETING'
   end
