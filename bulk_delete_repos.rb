@@ -17,4 +17,9 @@ repositories.each do |repo|
   puts "\tOwned by #{owner}"
   puts "\tThis is a private repo" if is_private
   puts "\tThis is a forked repo" if is_fork
+  puts "\nType [Y/y] to delete, or press any key to continue."
+  response = $stdin.gets.chomp
+  if response =~ /^[Yy]([Ee][Ss])?$/
+    puts 'DELETING'
+  end
 end
