@@ -1,5 +1,4 @@
 require 'json'
-require 'pry'
 require 'io/console'
 
 puts 'What is your Github username?'
