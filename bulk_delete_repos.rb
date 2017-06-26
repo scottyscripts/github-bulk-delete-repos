@@ -13,8 +13,9 @@ def delete_repo!(owner, repo_name)
   confirmation = STDIN.gets.chomp
   if confirmation =~ /^[Yy]([Ee][Ss])?$/
     `curl --request DELETE -u "#{USERNAME}:#{PASSWORD}" "https://api.github.com/repos/#{owner}/#{repo_name}"`
+    puts "You have successfully deleted repo: #{repo_name}"
   else
-    puts "Moving to next repo...\n"
+    puts 'Moving to next repo...'
   end
 end
 
@@ -31,7 +32,7 @@ repositories.each do |repo|
   is_private = repo['private']
   is_fork = repo['fork']
   is_admin = repo['permissions']['admin']
-  puts "Would you like to delete #{repo_name}?"
+  puts "\nWould you like to delete #{repo_name}?"
   puts "  Owned by #{owner}"
   puts "  #{description}" unless description.nil?
   puts '  This is a private repo.' if is_private
